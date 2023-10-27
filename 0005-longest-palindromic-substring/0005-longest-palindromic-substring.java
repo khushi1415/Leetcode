@@ -1,37 +1,25 @@
-import java.util.*;
-class Solution {
-    public String longestPalindrome(String s) {
-        if(s.length()==0){return "";}
-        int left=0;
-        int right=0;
-        int max_len=0;
-        for(int i=0;i<s.length()-1;i++){
-            for(int j=0;i-j>-1&&i+j<s.length();j++){
-                if(s.charAt(i+j)==s.charAt(i-j)){
-                    if(max_len<2*j+1){
-                        max_len=2*j+1;
-                        left=i-j;
-                        right=i+j;
-                    }
-                }else{
-                    break;
-                }
-            }
-            for(int j=0;i+j+1<s.length()&&i-j>-1;j++){
-                if(s.charAt(i+j+1)==s.charAt(i-j)){
-                    if(max_len<2*j+2){
-                        max_len=2*j+2;
-                        left=i-j;
-                        right=i+j+1;
-                    }
-                }else{
-                    break;
-                }
-            }
-        }
-        if(max_len==0){
-            return ""+s.charAt(0);
-        }
-        return s.substring(left,right+1);
+public class Solution {
+private int lo, maxLen;
+
+public String longestPalindrome(String s) {
+	int len = s.length();
+	if (len < 2)
+		return s;
+	
+    for (int i = 0; i < len-1; i++) {
+     	extendPalindrome(s, i, i);  //assume odd length, try to extend Palindrome as possible
+     	extendPalindrome(s, i, i+1); //assume even length.
     }
+    return s.substring(lo, lo + maxLen);
 }
+
+private void extendPalindrome(String s, int j, int k) {
+	while (j >= 0 && k < s.length() && s.charAt(j) == s.charAt(k)) {
+		j--;
+		k++;
+	}
+	if (maxLen < k - j - 1) {
+		lo = j + 1;
+		maxLen = k - j - 1;
+	}
+}}
